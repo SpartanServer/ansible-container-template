@@ -1,0 +1,56 @@
+---
+- name: start docker
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: start docker
+      docker_container:
+        name: "{{ containername }}"
+        image: centos:7
+        detach: yes
+        tty: yes
+        command: /sbin/init
+        privileged: yes
+        recreate: yes
+        comparisons:
+          '*': ignore
+          env: strict
+
+
+    - name: add host
+      add_host:
+        name: "{{ containername }}"
+
+- name: maker docker
+  hosts: "{{ containername }}"
+  connection: docker
+  tasks:
+
+# write tasks
+      
+- name: make docker image
+  hosts: localhost
+  become: yes
+  tasks:
+    - name: stop docker
+      docker_container:
+        name: "{{ containername }}"
+        state: stopped
+
+    - name: make image 
+      shell: "docker commit {{ containername }} {{containername}}:latest"
+
+    - name: archive image
+      docker_image:
+        name: "{{ containername }}"
+        tag: latest
+        archive_path: "{{ containername }}.tar"
+        source: local
+
+    - name: delete docker
+      docker_container:
+        name: "{{ containername }}"
+        state: absent
+
+
+         

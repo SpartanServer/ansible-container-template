@@ -1,0 +1,24 @@
+- name: make docker container
+  hosts: master
+  tasks:
+    - name: copy image
+      copy:
+        src: "container/{{ containername }}.tar"
+        dest: "/tmp/{{ containername }}.tar"
+        owner: root
+        foo: root
+        mode: 0644
+
+    - name: regist image:
+      docker_image:
+        name: "{{ containername }}"
+        tag: latest
+        load_path: "/tmp/{{ containername }}.tar"
+        source: load
+      
+    - name: make docker
+      docker_container:
+        name: "{{ containername }}"
+        image: "{{ containername }}:latest"
+        command: /bin/bash
+

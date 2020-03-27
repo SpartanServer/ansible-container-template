@@ -1,0 +1,8 @@
+
+[all:vars]
+ansible_ssh_user=root #username
+ansible_ssh_pass=1230 #password
+ansible_become_pass=1230 #password
+#ansible_python_interpreter=/usr/bin/python3
+
+containername=template
