@@ -6,10 +6,10 @@
         src: "container/{{ containername }}.tar"
         dest: "/tmp/{{ containername }}.tar"
         owner: root
-        foo: root
+        group: root
         mode: 0644
 
-    - name: regist image:
+    - name: regist image
       docker_image:
         name: "{{ containername }}"
         tag: latest
