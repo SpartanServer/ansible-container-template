@@ -33,9 +33,10 @@
   become: yes
   tasks:
     - name: stop docker
-      docker_container:
-        name: "{{ containername }}"
-        state: stopped
+      shell: "docker stop {{ containername }}"
+      #docker_container:
+      #  name: "{{ containername }}"
+      #  state: stopped
 
     - name: make image 
       shell: "docker commit {{ containername }} {{containername}}:latest"
